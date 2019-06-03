@@ -1,0 +1,31 @@
+FROM ubuntu:latest
+
+ARG net
+ARG int
+
+RUN apt-get update
+
+### NETWORK ###
+# curl wget
+# ping
+# ifconfig
+# nslookup
+RUN if [ ! -z "$net" ]; then \
+        apt-get install -y \
+        curl wget \
+        iputils-ping \
+        net-tools \
+        dnsutils \
+        ; \
+    fi
+
+### INTERACTIVE ###
+# nano
+# bash-completion
+RUN if [ ! -z "$int" ]; then \
+        apt-get install -y \
+        nano \
+        bash-completion \
+        ; \
+    fi
+ 
