@@ -1,15 +1,22 @@
-var request = require('request');
+/* webapi.js */
 /*
-Example: https://chain.api.btc.com/v3/block/latest/tx
-	url = 'http://api.website.org/v3/'
-	endpoint = block/latest/tx
+ * JS code to make webapi requests.
+ * It prints the result and then call the 'callback' function
+ */
+/*
+   Example: https://chain.api.btc.com/v3/block/latest/tx
+    url = 'http://api.website.org/v3/'
+    endpoint = block/latest/tx
 */
 
+'use strict';
+
+var request = require('request');
+
 /* POST */
-function postToApi (api_url, api_endpoint, json_data, callback) {
-  console.log(api_endpoint+': ', JSON.stringify(json_data));
+function postToApi (api_url, json_data, callback) {
   request.post({
-      url: api_url+api_endpoint,
+      url: api_url,
       headers: {'Content-Type': 'application/json'},
       form: json_data
   },
@@ -21,21 +28,19 @@ function postToApi (api_url, api_endpoint, json_data, callback) {
           body = JSON.parse(body)
       }
       console.log('Status: ', response.statusCode);
-      console.log('Body: ', JSON.stringify(body, null, 2));
       return callback(null, body);
   });
 }
 
 /* GET */
-function getFromApi (api_url, api_endpoint, param, callback) {
-    request.get(api_url+api_endpoint+'/'+param, function (error, response, body) {
+function getFromApi (api_url, callback) {
+    request.get(api_url, function (error, response, body) {
         if (error) return callback(error);
 
         if (typeof body === 'string')
             body = JSON.parse(body)
 
         console.log('Status:', response.statusCode);
-        console.log('Body: ', JSON.stringify(body, null, 2));
         return callback(null, body);
     });
 }
